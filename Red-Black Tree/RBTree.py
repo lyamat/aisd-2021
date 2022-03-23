@@ -2,18 +2,20 @@ from enum import Enum
 from typing import Union
 from colorama import Fore
 
+
 class Color(Enum):
     Black = 0
     Red = 1
 
+
 class Node:
-    d: Union[int, float] = None
+    d: object = None
     l = None
     r = None
     p = None
     c: Color = Color.Red
 
-    def __init__(self, el: Union[int, float]) -> None:
+    def __init__(self, el: object) -> None:
         self.d = el
 
     def grandparent(self):
@@ -85,21 +87,21 @@ class Node:
             u.c = Color.Black
             g = node.grandparent()
             g.c = Color.Red
-            Node.insert_case1(g) 
+            Node.insert_case1(g)
         else:
             Node.insert_case4(node)
 
     def insert_case4(node):
         g = node.grandparent()
- 
+
         if node == node.p.r and node.p == g.l:
             Node.rotate_left(node.p)
             node = node.l
-            #node.l.insert_case5()
+            # node.l.insert_case5()
         elif node == node.p.l and node.p == g.r:
             Node.rotate_right(node.p)
             node = node.r
-            #node.r.insert_case5()
+            # node.r.insert_case5()
         Node.insert_case5(node)
 
     def insert_case5(node):
@@ -116,8 +118,14 @@ class Node:
     def print(self, indent: int, depth: int = 0) -> None:
         if self.r is not None:
             (self.r).print(indent, depth + 1)
-        print(Fore.RED if self.c == Color.Red else "",' '*depth*indent, self.d, Fore.WHITE,'\n')
-        #print(' '*depth, self.d, '\n')
+        print(
+            Fore.RED if self.c == Color.Red else "",
+            " " * depth * indent,
+            self.d,
+            Fore.WHITE,
+            "\n",
+        )
+        # print(' '*depth, self.d, '\n')
         if self.l is not None:
             (self.l).print(indent, depth + 1)
 
@@ -127,23 +135,22 @@ class Node:
         l.append(self.d)
         if self.r is not None:
             self.r.add_to_list(l)
-        
 
 
 class RBTree:
     root: Node = None
+
     def __init__(self):
         pass
 
     def traversal(self, back: bool = False):
         l = []
-        self.root.add_to_list(l)    
+        self.root.add_to_list(l)
 
         if back:
             l.reverse()
 
         return l
-
 
     def add(self, el: Union[int, float]) -> None:
         n = Node(el)
